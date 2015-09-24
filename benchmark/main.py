@@ -21,4 +21,7 @@ def run_benchmark(dir, numRuns):
     with EncFs(dir) as fs:
         encfs = Bonnie(name="EncFS", dir=fs.mount_dir).run(numRuns)
 
-    print("Output plain:\n%s\n\nOutput EncFs:\n%s\n" % (plain, encfs))
+    output = "\n".join([plain, encfs])
+    print("Output:\n")
+    print(output)
+

@@ -8,8 +8,8 @@ class Bonnie(object):
 
     def run(self, numRuns):
         output = subprocess.check_output(
-            ["bonnie++", "-d", self.dir, "-m", self.name, "-x", str(numRuns), "-r", "128", "-s", "256", "-n", "256"])
-            #["bonnie++", "-d", self.dir, "-m", self.name, "-x", str(numRuns), "-n", "256"])
+            #["bonnie++", "-d", self.dir, "-m", self.name, "-x", str(numRuns), "-r", "32", "-s", "64", "-n", "32"])
+            ["bonnie++", "-d", self.dir, "-m", self.name, "-x", str(numRuns), "-n", "256"])
         return self._generate_csv_from_output(output, numRuns)
 
     def header_line(self):
