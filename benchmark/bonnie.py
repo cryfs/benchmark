@@ -6,7 +6,7 @@ class Bonnie(object):
         self.dir = dir
         self.name = name
 
-    def run(self, numRuns, create_test_size=None, readwrite_test_size=None):
+    def run(self, numRuns, create_test_size=16, readwrite_test_size=None):
         options = ["bonnie++", "-d", self.dir, "-m", self.name, "-x", str(numRuns)]
         if create_test_size is not None:
             options = options + ["-n", create_test_size]
