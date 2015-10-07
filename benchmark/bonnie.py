@@ -6,10 +6,13 @@ class Bonnie(object):
         self.dir = dir
         self.name = name
 
-    def run(self, numRuns):
-        output = subprocess.check_output(
-            #["bonnie++", "-d", self.dir, "-m", self.name, "-x", str(numRuns), "-r", "32", "-s", "64", "-n", "32"])
-            ["bonnie++", "-d", self.dir, "-m", self.name, "-x", str(numRuns), "-n", "256"])
+    def run(self, numRuns, create_test_size=None, readwrite_test_size=None):
+        options = ["bonnie++", "-d", self.dir, "-m", self.name, "-x", str(numRuns)]
+        if create_test_size is not None:
+            options = options + ["-n", create_test_size]
+        if readwrite_test_size is not None:
+            options = options + ["-s", readwrite_test_size]
+        output = subprocess.check_output(options)
         return self._generate_csv_from_output(output, numRuns)
 
     def header_line(self):
