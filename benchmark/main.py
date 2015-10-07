@@ -26,7 +26,7 @@ def run_benchmark(dir, numRuns):
         veracrypt = Bonnie(name="VeraCrypt", dir=fs.mount_dir).run(numRuns, create_test_size=16)
     print("VeraCrypt Output: %s" % veracrypt)
     with VeraCrypt(dir) as fs:
-        veracrypt_1m = Bonnie(name="VeraCrypt-!M", dir=fs.mount_dir).run(numRuns, create_test_size=16, readwrite_test_size="32g:1024k")
+        veracrypt_1m = Bonnie(name="VeraCrypt-1M", dir=fs.mount_dir).run(numRuns, create_test_size=16, readwrite_test_size="32g:1024k")
     print("VeraCrypt-1M Output: %s" % veracrypt_1m)
 
     with PlainFs(dir) as fs:
