@@ -9,9 +9,9 @@ class Bonnie(object):
     def run(self, numRuns, create_test_size=16, readwrite_test_size=None):
         options = ["bonnie++", "-d", self.dir, "-m", self.name, "-x", str(numRuns)]
         if create_test_size is not None:
-            options = options + ["-n", create_test_size]
+            options = options + ["-n", "%d:10240:10240:10" % create_test_size]
         if readwrite_test_size is not None:
-            options = options + ["-s", readwrite_test_size]
+            options = options + ["-s", str(readwrite_test_size)]
         output = subprocess.check_output(options)
         return self._generate_csv_from_output(output, numRuns)
 

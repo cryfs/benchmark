@@ -15,22 +15,27 @@ def run_benchmark(dir, numRuns):
     # Setup only needed for filebench
     #setup.setup()
 
+    truecrypt = ""
     with TrueCrypt(dir) as fs:
-        truecrypt = Bonnie(name="TrueCrypt", dir=fs.mount_dir).run(numRuns)
+      truecrypt = truecrypt + Bonnie(name="TrueCrypt", dir=fs.mount_dir).run(numRuns)
     print("TrueCrypt Output: %s" % truecrypt)
 
+    cryfs = ""
     with CryFs(dir) as fs:
-        cryfs = Bonnie(name="CryFS", dir=fs.mount_dir).run(numRuns)
+      cryfs = cryfs + Bonnie(name="CryFS", dir=fs.mount_dir).run(numRuns)
     print("CryFS Output: %s" % cryfs)
 
+    plain=""
     with PlainFs(dir) as fs:
-        plain = Bonnie(name="plain", dir=fs.mount_dir).run(numRuns, create_test_size=256)
+        plain = Bonnie(name="plain", dir=fs.mount_dir).run(numRuns)
     print("Plain Output: %s" % plain)
 
+    encfs = ""
     with EncFs(dir) as fs:
         encfs = Bonnie(name="EncFS", dir=fs.mount_dir).run(numRuns)
     print("EncFS Output: %s" % encfs)
 
+    veracrypt=""
     with VeraCrypt(dir) as fs:
         veracrypt = Bonnie(name="VeraCrypt", dir=fs.mount_dir).run(numRuns)
     print("VeraCrypt Output: %s" % veracrypt)
