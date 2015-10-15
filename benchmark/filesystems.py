@@ -65,7 +65,7 @@ class CryFs(object):
         os.mkdir(self.base_dir)
         os.mkdir(self.mount_dir)
         self.process = subprocess.Popen(
-            ["./cryfs", "--config", self.config_file, self.base_dir, self.mount_dir, "--", "-f"],
+            ["./cryfs", "-f", "--config", self.config_file, self.base_dir, self.mount_dir],
             stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=sys.stderr)
         self.process.stdin.write(self._CRYFS_INPUT)
         self.process.stdin.close()
