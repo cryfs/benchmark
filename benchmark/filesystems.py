@@ -66,7 +66,7 @@ class CryFs(object):
         os.mkdir(self.mount_dir)
         self.process = subprocess.Popen(
             ["./cryfs", "-f", "--config", self.config_file, self.base_dir, self.mount_dir],
-            stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=sys.stderr)
+            stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=sys.stderr, env= {"CRYFS_FRONTEND": "noninteractive"})
         self.process.stdin.write(self._CRYFS_INPUT)
         self.process.stdin.close()
         print("CryFS started. Waiting 10sec to give it some bootup time.")
@@ -116,11 +116,11 @@ class VeraCrypt(object):
                                self.volume_file])
 
     def _mountVolume(self):
-        subprocess.check_call(["veracrypt", "--password", self.password, "--pim=1", "--keyfiles=%s" % self.key_file,
+        subprocess.check_call(["sudo", "veracrypt", "--password", self.password, "--pim=1", "--keyfiles=%s" % self.key_file,
                        "--protect-hidden=no", self.volume_file, self.mount_dir])
 
     def _unmountVolume(self):
-        subprocess.check_call(["veracrypt", "-d", self.volume_file])
+        subprocess.check_call(["sudo", "veracrypt", "-d", self.volume_file])
 
 
 class TrueCrypt(object):
@@ -158,8 +158,8 @@ class TrueCrypt(object):
                                self.volume_file])
 
     def _mountVolume(self):
-        subprocess.check_call(["truecrypt", "--password=%s" % self.password, "--keyfiles=%s" % self.key_file,
+        subprocess.check_call(["sudo", "truecrypt", "--password=%s" % self.password, "--keyfiles=%s" % self.key_file,
                        "--protect-hidden=no", self.volume_file, self.mount_dir])
 
     def _unmountVolume(self):
-        subprocess.check_call(["truecrypt", "-d", self.volume_file])
+        subprocess.check_call(["sudo", "truecrypt", "-d", self.volume_file])
