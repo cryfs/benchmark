@@ -7,3 +7,8 @@ Run with
 
 The tool will then run the benchmark and in the end, it will output CSV lines.
 These lines can be imported into the results.ods spreadsheet.
+
+Hints for getting meaningful results:
+- switch off swap
+- don't overclock system
+- stop other processes (Dropbox, ...)
