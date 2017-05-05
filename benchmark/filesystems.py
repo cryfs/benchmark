@@ -82,7 +82,7 @@ class CryFs(object):
 
 
 class VeraCrypt(object):
-    _SIZE = 35 * 1024 * 1024 * 1024  # 35GB
+    _SIZE = 50 * 1024 * 1024 * 1024  # 50GB
 
     def __init__(self, dir):
         self.root_dir = dir
@@ -124,7 +124,7 @@ class VeraCrypt(object):
 
 
 class TrueCrypt(object):
-    _SIZE = 35 * 1024 * 1024 * 1024  # 35GB
+    _SIZE = 50 * 1024 * 1024 * 1024  # 50GB
 
     def __init__(self, dir):
         self.root_dir = dir
