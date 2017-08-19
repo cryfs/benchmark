@@ -66,9 +66,13 @@ class CryFs(object):
         os.mkdir(self.mount_dir)
         self.process = subprocess.Popen(
             ["./cryfs", "-f", "--config", self.config_file, self.base_dir, self.mount_dir],
-            stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=sys.stderr, env= {"CRYFS_FRONTEND": "noninteractive"})
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=sys.stderr, env= {"CRYFS_FRONTEND": "noninteractive"})
         self.process.stdin.write(self._CRYFS_INPUT)
         self.process.stdin.close()
+        print("Waiting for CryFS to start up")
+        output_line = ""
+        while "Mounting filesystem" not in output_line:
+            output_line = self.process.stdout.readline().decode(encoding="UTF-8")
         print("CryFS started. Waiting 10sec to give it some bootup time.")
         time.sleep(10)
         return self
@@ -91,6 +95,9 @@ class VeraCrypt(object):
         self.volume_file = os.path.join(self.root_dir, "veracrypt-volume-%s" % random_id)
         self.mount_dir = os.path.join(self.root_dir, "veracrypt-mount-%s" % random_id)
         self.password = random_string(20)
+        # Create files. If we let veracrypt create it, it is owned by root and we can't delete it later
+        open(self.key_file, 'a').close()
+        open(self.volume_file, 'a').close()
 
     def __enter__(self):
         os.mkdir(self.mount_dir)
@@ -133,6 +140,9 @@ class TrueCrypt(object):
         self.volume_file = os.path.join(self.root_dir, "truecrypt-volume-%s" % random_id)
         self.mount_dir = os.path.join(self.root_dir, "truecrypt-mount-%s" % random_id)
         self.password = random_string(20)
+        # Create files. If we let truecrypt create it, it is owned by root and we can't delete it later
+        open(self.key_file, 'a').close()
+        open(self.volume_file, 'a').close()
 
     def __enter__(self):
         os.mkdir(self.mount_dir)
