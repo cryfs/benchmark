@@ -53,7 +53,9 @@ def run_benchmark(dir, numRuns, outputFile):
     print(output)
 
     if outputFile is not None:
-        html = Bonnie.csv2html(output)
         with open(outputFile, 'w') as output_file:
+            output_file.write(output)
+        html = Bonnie.csv2html(output)
+        with open("%s.html" % outputFile, 'w') as output_file:
             output_file.write(html)
-        print("Output stored to %s" % outputFile)
+        print("Output stored to %s and %s.html" % (outputFile, outputFile))
