@@ -7,39 +7,53 @@ def main():
     parser = argparse.ArgumentParser(description="Run filesystem benchmarks comparing cryfs to other file systems")
     parser.add_argument('--dir', required=True, help="Directory where the benchmark is run.")
     parser.add_argument('--runs', type=int, default=1, help="Number of runs.")
+    parser.add_argument('--output-file', help="Name of a html file where the benchmark results should be stored")
     args = parser.parse_args()
-    run_benchmark(args.dir, args.runs)
+    run_benchmark(args.dir, args.runs, args.output_file)
 
 
-def run_benchmark(dir, numRuns):
+def run_benchmark(dir, numRuns, outputFile):
     # Setup only needed for filebench
     #setup.setup()
 
     truecrypt = ""
-    with TrueCrypt(dir) as fs:
-      truecrypt = truecrypt + Bonnie(name="TrueCrypt", dir=fs.mount_dir).run(numRuns)
-    print("TrueCrypt Output: %s" % truecrypt)
-
     cryfs = ""
-    with CryFs(dir) as fs:
-      cryfs = cryfs + Bonnie(name="CryFS", dir=fs.mount_dir).run(numRuns)
-    print("CryFS Output: %s" % cryfs)
-
-    plain=""
-    with PlainFs(dir) as fs:
-        plain = Bonnie(name="plain", dir=fs.mount_dir).run(numRuns)
-    print("Plain Output: %s" % plain)
-
+    plain = ""
     encfs = ""
-    with EncFs(dir) as fs:
-        encfs = Bonnie(name="EncFS", dir=fs.mount_dir).run(numRuns)
-    print("EncFS Output: %s" % encfs)
+    veracrypt = ""
 
-    veracrypt=""
-    with VeraCrypt(dir) as fs:
-        veracrypt = Bonnie(name="VeraCrypt", dir=fs.mount_dir).run(numRuns)
-    print("VeraCrypt Output: %s" % veracrypt)
+    for numRun in range(numRuns):
+        with TrueCrypt(dir) as fs:
+            output = Bonnie(name="TrueCrypt (%d)" % numRun, dir=fs.mount_dir).run(1)
+            print("TrueCrypt Output: %s" % output)
+            truecrypt += output + "\n"
 
-    output = "\n".join([plain, encfs, truecrypt, veracrypt, cryfs])
+        with CryFs(dir) as fs:
+            output = Bonnie(name="CryFS (%d)" % numRun, dir=fs.mount_dir).run(1)
+            print("CryFS Output: %s" % output)
+            cryfs += output + "\n"
+
+        with PlainFs(dir) as fs:
+            output = Bonnie(name="plain (%d)" % numRun, dir=fs.mount_dir).run(1)
+            print("Plain Output: %s" % output)
+            plain += output + "\n"
+
+        with EncFs(dir) as fs:
+            output = Bonnie(name="EncFS (%d)" % numRun, dir=fs.mount_dir).run(1)
+            print("EncFS Output: %s" % output)
+            encfs += output + "\n"
+
+        with VeraCrypt(dir) as fs:
+            output = Bonnie(name="VeraCrypt (%d)" % numRun, dir=fs.mount_dir).run(1)
+            print("VeraCrypt Output: %s" % output)
+            veracrypt += output + "\n"
+
+    output = cryfs + encfs + truecrypt + veracrypt + plain
     print("Output:\n")
     print(output)
+
+    if outputFile is not None:
+        html = Bonnie.csv2html(output)
+        with open(outputFile, 'w') as output_file:
+            output_file.write(html)
+        print("Output stored to %s" % outputFile)

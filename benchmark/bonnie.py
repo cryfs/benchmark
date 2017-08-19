@@ -28,3 +28,7 @@ class Bonnie(object):
 #        assert(all([line.count(",") == expected_num_column_separators for line in lines]))
         assert(len(lines) == expectedNumLines)
         return "\n".join(lines)
+
+    @classmethod
+    def csv2html(self, csv):
+        return subprocess.check_output(["bon_csv2html"], input=csv.encode(encoding="UTF-8")).decode(encoding="UTF-8")
