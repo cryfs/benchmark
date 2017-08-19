@@ -11,5 +11,6 @@ These lines can be imported into the results.ods spreadsheet.
 Hints for getting meaningful results:
 - switch off swap
 - don't overclock system
+- run on not otherwise encrypted partition (no dmcrypt or similar)
 - stop other processes (Dropbox, ...)
 - make sure no CPU-heavy system processes are currently taking a lot of CPU (e.g. tracker-miner)

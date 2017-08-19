@@ -1,0 +1,2 @@
+- Test cryfs 0.9.7 vs 0.10-m2 vs newblockstore vs newblockstore-with-cache
+- Test cryfs against competitors with concurrency parameter != 1
