@@ -12,3 +12,4 @@ Hints for getting meaningful results:
 - switch off swap
 - don't overclock system
 - stop other processes (Dropbox, ...)
+- make sure no CPU-heavy system processes are currently taking a lot of CPU (e.g. tracker-miner)
