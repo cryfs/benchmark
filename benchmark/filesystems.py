@@ -54,8 +54,10 @@ class CryFs(object):
     # Choose aes256-gcm
     _CRYFS_INPUT = "1\r\n".encode()
 
-    def __init__(self, dir):
+    def __init__(self, dir, blocksize, cryfs_executable):
         self.root_dir = dir
+        self.blocksize = blocksize
+        self.cryfs_executable = cryfs_executable
         random_id = random_string(5)
         self.config_file = os.path.join(self.root_dir, "cryfs-config-%s.json" % random_id)
         self.base_dir = os.path.join(self.root_dir, "cryfs-base-%s" % random_id)
@@ -65,7 +67,7 @@ class CryFs(object):
         os.mkdir(self.base_dir)
         os.mkdir(self.mount_dir)
         self.process = subprocess.Popen(
-            ["./cryfs", "-f", "--config", self.config_file, self.base_dir, self.mount_dir],
+            [self.cryfs_executable, "-f", "--blocksize", str(self.blocksize), "--config", self.config_file, self.base_dir, self.mount_dir],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=sys.stderr, env= {"CRYFS_FRONTEND": "noninteractive"})
         self.process.stdin.write(self._CRYFS_INPUT)
         self.process.stdin.close()
