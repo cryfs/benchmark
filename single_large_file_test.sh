@@ -13,6 +13,7 @@ MOUNTDIR=/tmp/mountdir
 FILE=${MOUNTDIR}/file
 
 function _unmount {
+  sleep 5
   sync
   fusermount -u ${MOUNTDIR}
   sync
